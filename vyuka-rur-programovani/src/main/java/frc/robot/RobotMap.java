@@ -3,7 +3,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController; //importuje tridu XboxController z WPI knihovny
 import edu.wpi.first.wpilibj.buttons.JoystickButton; //importuje tridu JoystickButton ze slozky buttons z WPI knihovny
 import edu.wpi.first.wpilibj.buttons.Button; //importuje tridu Button ze slozky buttons z WPI knihovny
-import edu.wpi.first.wpilibj.GenericHID; //importuje trigu GenericHid z WPI knihovny
+import edu.wpi.first.wpilibj.GenericHID; //importuje tridu GenericHid z WPI knihovny
+import edu.wpi.first.wpilibj.Talon; //importuje tridu Talon z WPI knihovny
+import edu.wpi.first.wpilibj.SpeedControllerGroup; //importuje tridu SpeedContrellerGroup z WPI knihovny
+import edu.wpi.first.wpilibj.drive.DifferentialDrive; //importuje tridu DifferentialDrive z WPI knihovny
 
 public class RobotMap {
     
@@ -11,7 +14,21 @@ public class RobotMap {
 
     }
     
-    final XboxController controller = new XboxController(0); //vytvori novy objekt ovladace, na ktery se muzeme ovladat v nasledujicich funkcich
+    //program pro motor controllery
+
+    final Talon leftFront = new Talon(0); //vytvori novy objekt motor controlleru na PWM portu 0, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
+    final Talon rightFront = new Talon(1); //vytvori novy objekt motor controlleru na PWM portu 1, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
+    final Talon leftRear = new Talon(2); //vytvori novy objekt motor controlleru na PWM portu 2, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
+    final Talon rightRear = new Talon(3); //vytvori novy objekt motor controlleru na PWM portu 3, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
+
+    final SpeedControllerGroup leftTalons = new SpeedControllerGroup(leftFront, leftRear); //vytvori novy objekt sjednocujici objekty leftFront a leftRear, na ktery se muzeme odkazat v nasledujicich definicich a funkcich.
+    final SpeedControllerGroup rightTalons = new SpeedControllerGroup(rightFront, rightRear); //vytvori novy objekt sjednocujici objekty rightFront a rightRear, na ktery se muzeme odkazat v nasledujicich definicich a funkcich.
+
+    final DifferentialDrive drive = new DifferentialDrive(leftTalons, rightTalons); //vytvori novy objekt podvozku sjednocujici objekty leftTalons a rightTalons, na ktery se muzeme odkazat v nasledujicich funkcich.
+
+    //program pro ovladac
+
+    final XboxController controller = new XboxController(0); //vytvori novy objekt ovladace, na ktery se muzeme odkazat v nasledujicich funkcich
     final Button buttonA = new JoystickButton(controller, 0); //vytvori novy objekt tlacitka na vyse definovanem ovladaci, diky kteremu muzeme sledovat, zda je toto tlacitko zmacknute
     final Button buttonB = new JoystickButton(controller, 1); //vytvori novy objekt tlacitka na vyse definovanem ovladaci, diky kteremu muzeme sledovat, zda je toto tlacitko zmacknute
     final Button buttonX = new JoystickButton(controller, 2); //vytvori novy objekt tlacitka na vyse definovanem ovladaci, diky kteremu muzeme sledovat, zda je toto tlacitko zmacknute

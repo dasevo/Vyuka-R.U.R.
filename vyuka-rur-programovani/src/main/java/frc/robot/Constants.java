@@ -25,5 +25,6 @@ public class Constants { //trida, do ktere se ukladaji konstantni hodnoty, abych
 
     //setup
     public static final double deadzone = 0.2;
+    public static final int timeoutMs = 10;
 
 }

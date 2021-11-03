@@ -11,11 +11,12 @@ import edu.wpi.first.wpilibj.DoubleSolenoid; //importuje tridu DoubleSolenoid z 
 import edu.wpi.first.wpilibj.Compressor; //importuje tridu Compressor z WPI knihovny
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; //importuje tridu WPI_TalonSRX z externi knihovny (viz Teams)
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 public class RobotMap {
     
     public RobotMap() { //konstruktor pro tridu RobotMap
-
+        setupTalons(intakeTalon); //nastaveni potrebnych hodnot pro intakeTalon (funguje pouze pro "chytre" ovladace)
     }
     
     //program pro motor controllery
@@ -37,6 +38,25 @@ public class RobotMap {
     final DoubleSolenoid intakeShift = new DoubleSolenoid(Constants.intakeSolenoidIn, Constants.intakeSolenoidOut); //vytvori novy objekt double solenoidu na portech PCM 0 a 1
 
     final Compressor compressor = new Compressor(Constants.compressor); //vytvori novy objekt typu Compressor na PCM portu 0, jakmile se jedno vytvori, automaticky se zapina a vypina
+
+    /**
+     * Funkce pro nastavovani zakladnich hodnot pro talony.
+     * @param talon ktery ma byt nastaven.
+     */
+    void setupTalons(WPI_TalonSRX talon) { //provede zakladni nastveni talonu
+        talon.configNominalOutputForward(0, Constants.timeoutMs); //zakladni rychlost kontrolleru smerem vpred
+        talon.configNominalOutputReverse(0, Constants.timeoutMs); //zakladni rychlost kontrolleru smerem vzad
+        talon.configPeakOutputForward(1, Constants.timeoutMs); //maximalni rychlost kontrolleru smerem vpred
+        talon.configPeakOutputReverse(-1, Constants.timeoutMs); //maximalni rychlost kontrolleru smerem vzad
+        talon.configAllowableClosedloopError(0, 0, Constants.timeoutMs); //maximalni chyba senzoru zabudovaneho v kontrolleru
+        talon.configNeutralDeadband(0.05, Constants.timeoutMs); //maximalni povolena chyba v nastavovani rychlosti
+        talon.setNeutralMode(NeutralMode.Coast); //nastaveni chovani po zastaveni kontrolleru - Coast postupne dojizdi, Brake nahle zabrzdi
+        talon.enableCurrentLimit(true); //nastaveni maximalniho proudu (zapnuto/vypnuto)
+        talon.configContinuousCurrentLimit(30, Constants.timeoutMs); //nastaveni maximalniho proudu pri rotaci motoru
+        talon.configPeakCurrentLimit(30, Constants.timeoutMs); //nastaveni maximalniho proudu na kratky okamzik
+        talon.configPeakCurrentDuration(200, Constants.timeoutMs); //nastaveni doby trvani kratkeho okamziku vyse zmineneho nastaveni
+        talon.configOpenloopRamp(0.25); //nastaveni postupneho nabehu rychlosti a jeho casu
+    }
 
     //program pro ovladac
 

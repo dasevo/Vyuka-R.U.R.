@@ -19,13 +19,16 @@ import edu.wpi.first.wpilibj.TimedRobot;
 public class Robot extends TimedRobot {
 
   Drive drive; //vytvoreni noveho objektu typu Drive
+  Intake intake; //vytvoreni noveho objektu typu Intake
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   @Override
   public void robotInit() {
-    drive = new Drive(); //prirazeni hodnoty k nove promenne
+    drive = new Drive(); //prirazeni hodnoty k nove promenne drive
+    intake = new Intake(); //prirazeni hodnoty k nove promenne intake
   }
 
   @Override
@@ -47,6 +50,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     drive.periodic(); //spusteni funkce periodic uvnitr objektu drive
+    intake.periodic(); //spousteni periodickych funkci uvnitr objektu intake
   }
 
   @Override

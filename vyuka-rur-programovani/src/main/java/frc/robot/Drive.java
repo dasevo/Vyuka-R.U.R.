@@ -9,7 +9,7 @@ public class Drive {
     }
 
     /**
-     * Funkce pro rizeni robota
+     * Funkce pro rizeni robota.
      */
     public void drive() {
         robotMap.drive.arcadeDrive(robotMap.getLeftY(), robotMap.getRightX()); 
@@ -18,10 +18,21 @@ public class Drive {
     }
 
     /**
+     * Funkce pro pomalejsi rizeni robota.
+     */
+    public void slowerDrive() {
+        robotMap.drive.arcadeDrive(0.75*robotMap.getLeftY(), 0.75*robotMap.getRightX()); //rizeni robota se 3/4 rychlosti
+    }
+
+    /**
      * Funkce pro shromazdovani periodickych funkci v ramci tridy Drive
      */
     public void periodic() { //v tuto chvili ma tato funkce maly vyznam, jakmile se v teto tride objevi vice funkci, ktere se maji odehravat periodicky, nabyde tato funkce vetsiho vyznamu
-        drive();
+        if(robotMap.leftStick.get() || robotMap.rightStick.get()) { //pokud je zmacknuty levy nebo pravy joystick, robot pojede rychleji
+            drive();
+        } else {
+            slowerDrive();
+        }
     }
 
 }

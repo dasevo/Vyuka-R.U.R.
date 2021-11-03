@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj.GenericHID; //importuje tridu GenericHid z WPI knih
 import edu.wpi.first.wpilibj.Talon; //importuje tridu Talon z WPI knihovny
 import edu.wpi.first.wpilibj.SpeedControllerGroup; //importuje tridu SpeedContrellerGroup z WPI knihovny
 import edu.wpi.first.wpilibj.drive.DifferentialDrive; //importuje tridu DifferentialDrive z WPI knihovny
+import edu.wpi.first.wpilibj.DoubleSolenoid; //importuje tridu DoubleSolenoid z WPI knihovny
+import edu.wpi.first.wpilibj.Compressor; //importuje tridu Compressor z WPI knihovny
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; //importuje tridu WPI_TalonSRX z externi knihovny (viz Teams)
 
 public class RobotMap {
     
@@ -21,10 +25,18 @@ public class RobotMap {
     final Talon leftRear = new Talon(2); //vytvori novy objekt motor controlleru na PWM portu 2, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
     final Talon rightRear = new Talon(3); //vytvori novy objekt motor controlleru na PWM portu 3, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
 
+    final WPI_TalonSRX intakeTalon = new WPI_TalonSRX(0); //vytvori novy objekt motor controlleru na CAN ID 0
+
     final SpeedControllerGroup leftTalons = new SpeedControllerGroup(leftFront, leftRear); //vytvori novy objekt sjednocujici objekty leftFront a leftRear, na ktery se muzeme odkazat v nasledujicich definicich a funkcich.
     final SpeedControllerGroup rightTalons = new SpeedControllerGroup(rightFront, rightRear); //vytvori novy objekt sjednocujici objekty rightFront a rightRear, na ktery se muzeme odkazat v nasledujicich definicich a funkcich.
 
     final DifferentialDrive drive = new DifferentialDrive(leftTalons, rightTalons); //vytvori novy objekt podvozku sjednocujici objekty leftTalons a rightTalons, na ktery se muzeme odkazat v nasledujicich funkcich.
+
+    //program pro pneumatiku
+    
+    final DoubleSolenoid intakeShift = new DoubleSolenoid(0, 1); //vytvori novy objekt double solenoidu na portech PCM 0 a 1
+
+    final Compressor compressor = new Compressor(0); //vytvori novy objekt typu Compressor na PCM portu 0, jakmile se jedno vytvori, automaticky se zapina a vypina
 
     //program pro ovladac
 
@@ -33,6 +45,10 @@ public class RobotMap {
     final Button buttonB = new JoystickButton(controller, 1); //vytvori novy objekt tlacitka na vyse definovanem ovladaci, diky kteremu muzeme sledovat, zda je toto tlacitko zmacknute
     final Button buttonX = new JoystickButton(controller, 2); //vytvori novy objekt tlacitka na vyse definovanem ovladaci, diky kteremu muzeme sledovat, zda je toto tlacitko zmacknute
     final Button buttonY = new JoystickButton(controller, 3); //vytvori novy objekt tlacitka na vyse definovanem ovladaci, diky kteremu muzeme sledovat, zda je toto tlacitko zmacknute
+    final Button leftBumper = new JoystickButton(controller, 5); //vytvori novy objekt tlacitka na vyse definovanem ovladaci
+    final Button rightBumper = new JoystickButton(controller, 6); //vytvori novy objekt tlacitka na vyse definovanem ovladaci
+    final Button leftStick = new JoystickButton(controller, 9); //vytvori novy objekt tlacitka na vyse definovanem ovladaci
+    final Button rightStick = new JoystickButton(controller, 10); //vytvori novy objekt tlacita na vyse definovanem ovladaci
 
     /**
      * Funkce pro filtrovani malych hodnot (< 0.2)
@@ -68,4 +84,17 @@ public class RobotMap {
      */
     public double getRightX() { return deadzone(controller.getX(GenericHID.Hand.kRight)); } //jednoradkova funkce, ktera vraci soucasnou hodnotu praveho joysticku na ose X
 
+    /**
+     * Funkce pro zjistovani hodnoty triggeru na ovladaci.
+     * @return hodnota mezi 0 a 1 pro pravy trigger a hodnota mezi 0 a -1 pro levy trigger.
+     */
+    public double getTriggers() {
+        if(controller.getTriggerAxis(GenericHID.Hand.kRight) > 0) {
+            return deadzone(controller.getTriggerAxis(GenericHID.Hand.kRight));
+        } else if(controller.getTriggerAxis(GenericHID.Hand.kLeft) < 0) {
+            return -deadzone(controller.getTriggerAxis(GenericHID.Hand.kLeft));
+        } else {
+            return 0.0;
+        }
+    }
 }

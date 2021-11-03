@@ -27,7 +27,7 @@ public class Intake {
      * Funkce pro rychle roztoceni intaku opacnym smerem pro uvolneni zaseknuteho mice.
      */
     public void releaseIntake() {
-        robotMap.intakeTalon.set(-0.75); //nastavi rychlost otaceni intaku smerem ven velkou rychlosti, aby vypadl zaseknuty mic
+        robotMap.intakeTalon.set(Constants.intakeReleaseSpeed); //nastavi rychlost otaceni intaku smerem ven velkou rychlosti, aby vypadl zaseknuty mic
     }
 
     /**
@@ -63,13 +63,13 @@ public class Intake {
             stopIntake(); //pokud se intaku nenastavuje jina hodnota, zastavi se
         }
 
-        if(intakeIn && robotMap.buttonX.get() && buttonTimer.get() > 0.5) { //pokud jsou splneny vsechny podminky (intake je zasunuty, tlacitko X je zmacknute a od posledniho stisknuti tlacitka uplynulo vice jak 0.5 vteriny), intake se rozlozi
+        if(intakeIn && robotMap.buttonX.get() && buttonTimer.get() > Constants.buttonRefreshTime) { //pokud jsou splneny vsechny podminky (intake je zasunuty, tlacitko X je zmacknute a od posledniho stisknuti tlacitka uplynulo vice jak 0.5 vteriny), intake se rozlozi
             intakeOut(); //vysune se intake
             intakeIn = false; //nastavime promennou intakeIn na false - intake je rozlozeny
             buttonTimer.reset(); //nastavime hodnotu casovace na 0.0, abychom zabranili opetovnemu zaregistrovani stisknuti tlacitka
         }
 
-        if(!intakeIn && robotMap.buttonX.get() && buttonTimer.get() > 0.5) { //pokud jsou spleneny vsechny podminky (intake je rozlozeny, tlactko x je zmacknute a od posledniho stisknuti tlacitka uplynulo vice jak 0.5 vteriny), intake se slozi
+        if(!intakeIn && robotMap.buttonX.get() && buttonTimer.get() > Constants.buttonRefreshTime) { //pokud jsou spleneny vsechny podminky (intake je rozlozeny, tlactko x je zmacknute a od posledniho stisknuti tlacitka uplynulo vice jak 0.5 vteriny), intake se slozi
             intakeIn(); //zasune se intake
             intakeIn = true; //nastavime promennou intakeIn na true - intake je slozeny
             buttonTimer.reset(); //nastavime hodnotu casovace na 0.0, abychom zabranili opetovnemu zaregistrovani stisknuti tlacitka

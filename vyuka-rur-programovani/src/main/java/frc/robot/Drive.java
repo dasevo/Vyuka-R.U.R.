@@ -21,7 +21,7 @@ public class Drive {
      * Funkce pro pomalejsi rizeni robota.
      */
     public void slowerDrive() {
-        robotMap.drive.arcadeDrive(0.75*robotMap.getLeftY(), 0.75*robotMap.getRightX()); //rizeni robota se 3/4 rychlosti
+        robotMap.drive.arcadeDrive(Constants.slowDriveRatio*robotMap.getLeftY(), Constants.slowDriveRatio*robotMap.getRightX()); //rizeni robota se 3/4 rychlosti
     }
 
     /**

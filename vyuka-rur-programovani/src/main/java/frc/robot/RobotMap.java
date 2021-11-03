@@ -20,12 +20,12 @@ public class RobotMap {
     
     //program pro motor controllery
 
-    final Talon leftFront = new Talon(0); //vytvori novy objekt motor controlleru na PWM portu 0, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
-    final Talon rightFront = new Talon(1); //vytvori novy objekt motor controlleru na PWM portu 1, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
-    final Talon leftRear = new Talon(2); //vytvori novy objekt motor controlleru na PWM portu 2, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
-    final Talon rightRear = new Talon(3); //vytvori novy objekt motor controlleru na PWM portu 3, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
+    final Talon leftFront = new Talon(Constants.frontLeftTalon); //vytvori novy objekt motor controlleru na PWM portu 0, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
+    final Talon rightFront = new Talon(Constants.frontRightTalon); //vytvori novy objekt motor controlleru na PWM portu 1, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
+    final Talon leftRear = new Talon(Constants.rearLeftTalon); //vytvori novy objekt motor controlleru na PWM portu 2, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
+    final Talon rightRear = new Talon(Constants.rearRightTalon); //vytvori novy objekt motor controlleru na PWM portu 3, na ktery se muzeme odkazat v nasledujicich definicich a funcich.
 
-    final WPI_TalonSRX intakeTalon = new WPI_TalonSRX(0); //vytvori novy objekt motor controlleru na CAN ID 0
+    final WPI_TalonSRX intakeTalon = new WPI_TalonSRX(Constants.intakeTalon); //vytvori novy objekt motor controlleru na CAN ID 0
 
     final SpeedControllerGroup leftTalons = new SpeedControllerGroup(leftFront, leftRear); //vytvori novy objekt sjednocujici objekty leftFront a leftRear, na ktery se muzeme odkazat v nasledujicich definicich a funkcich.
     final SpeedControllerGroup rightTalons = new SpeedControllerGroup(rightFront, rightRear); //vytvori novy objekt sjednocujici objekty rightFront a rightRear, na ktery se muzeme odkazat v nasledujicich definicich a funkcich.
@@ -33,10 +33,10 @@ public class RobotMap {
     final DifferentialDrive drive = new DifferentialDrive(leftTalons, rightTalons); //vytvori novy objekt podvozku sjednocujici objekty leftTalons a rightTalons, na ktery se muzeme odkazat v nasledujicich funkcich.
 
     //program pro pneumatiku
-    
-    final DoubleSolenoid intakeShift = new DoubleSolenoid(0, 1); //vytvori novy objekt double solenoidu na portech PCM 0 a 1
 
-    final Compressor compressor = new Compressor(0); //vytvori novy objekt typu Compressor na PCM portu 0, jakmile se jedno vytvori, automaticky se zapina a vypina
+    final DoubleSolenoid intakeShift = new DoubleSolenoid(Constants.intakeSolenoidIn, Constants.intakeSolenoidOut); //vytvori novy objekt double solenoidu na portech PCM 0 a 1
+
+    final Compressor compressor = new Compressor(Constants.compressor); //vytvori novy objekt typu Compressor na PCM portu 0, jakmile se jedno vytvori, automaticky se zapina a vypina
 
     //program pro ovladac
 
@@ -56,7 +56,7 @@ public class RobotMap {
      * @return dobule input pokud je vetsi nez hranicni hodnota, jinak 0.
      */
     public double deadzone (double input) {
-        if(Math.abs(input) > 0.2){ return input; } //jednoradkova if struktura, pokud je hodnota promenne input vetsi nez 0.2, je vracena
+        if(Math.abs(input) > Constants.deadzone){ return input; } //jednoradkova if struktura, pokud je hodnota promenne input vetsi nez 0.2, je vracena
         else { return 0; } //jednoradkova else struktura, pokud neplati podminka v if-strukture, vrati 0
     }
 
